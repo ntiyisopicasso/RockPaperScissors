@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors Game</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        /* Global styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        /* Game container styles */
+        #game {
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        #game p {
+            margin-bottom: 20px;
+        }
+        
+        /* Button styles */
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #3e8e41;
+        }
+        
+        button#rock {
+            background-color: #ff69b4;
+        }
+        
+        button#paper {
+            background-color: #33b5e5;
+        }
+        
+        button#scissors {
+            background-color: #ff9800;
+        }
+        
+        /* Result styles */
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f7f7f7;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        
+        #result p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rock Paper Scissors Game</h1>
+    <div id="game">
+        <p>Select your move:</p>
+        <button id="rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+        <div id="result"></div>
+
+       
+    </div>
+
+    <script>
+        // Send player choice to server and handle response
+        $('button').click(function() {
+            var choice = $(this).attr('id');
+            $.ajax({
+                type: 'POST',
+                url: '/play',
+                contentType: 'application/json',
+                data: JSON.stringify({ choice: choice }),
+                success: function(response) {
+                    $('#result').html(`
+                        <p>You chose: ${response.player_choice}</p>
+                        <p>Computer chose: ${response.computer_choice}</p>
+                        <p>${response.result}</p>
+                    `);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
